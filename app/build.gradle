@@ -17,6 +17,15 @@ android {
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
   }
+
+  signingConfigs {
+    release {
+      storeFile file("keystore.jks")
+      storePassword "scroogedandroid"
+      keyAlias "keystore"
+      keyPassword "scroogedandroid"
+    }
+  }
 }
 
 dependencies {
@@ -26,4 +35,6 @@ dependencies {
   })
   compile 'com.android.support:appcompat-v7:25.3.1'
   testCompile 'junit:junit:4.12'
+
+  compile 'com.amap.api:location:latest.integration'
 }
