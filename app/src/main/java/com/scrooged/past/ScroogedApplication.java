@@ -9,7 +9,7 @@ import com.scrooged.past.net.AppEngine;
 
 public class ScroogedApplication extends Application {
 
-  public static final String YYWeahterKey = "rvico3a6gulbcmpd ";
+  public static final String YYWeahterKey = "rvico3a6gulbcmpd";
 
   @Override public void onCreate() {
     super.onCreate();

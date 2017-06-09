@@ -12,8 +12,7 @@ import com.amap.api.location.AMapLocationListener;
 import com.scrooged.past.ScroogedApplication;
 import com.scrooged.past.model.BaseWeahterBean;
 import com.scrooged.past.net.AppEngine;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.scrooged.past.utils.MapGeoCodeUtil;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -86,11 +85,11 @@ public class MainActivity extends Activity implements AMapLocationListener {
 
   @Override public void onLocationChanged(AMapLocation amapLocation) {
     if (amapLocation != null) {
+      //定位成功回调信息，设置相关消息
       if (amapLocation.getErrorCode() == 0) {
-        //定位成功回调信息，设置相关消息
-        amapLocation.getLatitude();//获取纬度
-        amapLocation.getLongitude();//获取经度
-        AppEngine.getWeatherInstance().getAppService().getWeatherNow(amapLocation.getLatitude()+","+amapLocation.getLongitude(),
+        //高德坐标转换为百度坐标，因为YY天气用的百度地图定位
+        double[] bd_latlngs = MapGeoCodeUtil.bd_encrypt(amapLocation.getLatitude(),amapLocation.getLongitude());
+        AppEngine.getWeatherInstance().getAppService().getWeatherNow(bd_latlngs[0]+","+bd_latlngs[1],
             ScroogedApplication.YYWeahterKey).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<BaseWeahterBean>() {
           @Override public void onCompleted() {
@@ -115,7 +114,6 @@ public class MainActivity extends Activity implements AMapLocationListener {
             + amapLocation.getErrorCode()
             + ", errInfo:"
             + amapLocation.getErrorInfo());
-
         Toast.makeText(getApplicationContext(), "定位失败", Toast.LENGTH_LONG).show();
       }
     }
